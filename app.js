@@ -60,7 +60,7 @@ db.once('open', function() {
         console.log(req.body);
         
         official.find({
-            official_token:req.body.destination
+            official_id:req.body.destination
         },function(err,official){
             if(official) console.log(official);
         })
