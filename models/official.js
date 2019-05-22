@@ -7,6 +7,9 @@ var OfficialSchema = new Schema({
     },
     official_token:{
         type: String
+    },
+    official_profile:{
+        type: Array
     }
 });
  

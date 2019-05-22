@@ -59,6 +59,12 @@ db.once('open', function() {
     app.post('/webhook', (req, res) => {
         console.log(req.body);
         
+        official.find({
+            official_token:req.body.destination
+        },function(err,official){
+            if(official) console.log(official);
+        })
+
         res.sendStatus(200)
     })
     
