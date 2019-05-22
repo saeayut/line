@@ -7,8 +7,8 @@ var mongoose = require('mongoose');
 const request = require('request')
 const bodyParser = require('body-parser')
 
-//Model mongodb
-const official = require('models/official');
+//Models mongodb
+var official = require('./models/official');
 
 mongoose.connect('mongodb://linebotdb:linebotdb123@mongodb-2624-0.cloudclusters.net:10003/lineBitDB?authSource=admin', {useNewUrlParser: true});
 var db = mongoose.connection;
