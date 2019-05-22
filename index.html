@@ -78,6 +78,7 @@
         $("#official_token").val(officialToken)
         $("#info").html(userId)
         
+        $("#message").html('')
         socket.on(userId,function(d){
             $("#message").append('<div>'+d+'</div>');
         })
