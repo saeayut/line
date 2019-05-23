@@ -9,6 +9,7 @@ const bodyParser = require('body-parser')
 
 //Models mongodb
 var official = require('./models/official');
+var text = require('./models/text');
 
 mongoose.connect('mongodb://linebotdb:linebotdb123@mongodb-2624-0.cloudclusters.net:10003/lineBitDB?authSource=admin', {useNewUrlParser: true});
 var db = mongoose.connection;
@@ -57,7 +58,8 @@ db.once('open', function() {
     app.use('/', express.static('public'))
       
     app.post('/webhook', (req, res) => {
-        console.log(req.body);
+        let msg = req.body.events[0].message.text
+        console.log(JSON.stringify(req.body));
         
         official.find({
             official_id:req.body.destination
@@ -65,6 +67,12 @@ db.once('open', function() {
             if(official) console.log(official);
         })
 
+        // var Text = new text({
+        //     userProfile:'',
+        //     text:'',
+        //     official_Token:'',
+        //     destination:''
+        // })
         res.sendStatus(200)
     })
     
