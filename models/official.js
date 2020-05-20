@@ -9,7 +9,7 @@ var OfficialSchema = new Schema({
         type: String
     },
     official_profile:{
-        type: Array
+        type: String
     }
 });
  

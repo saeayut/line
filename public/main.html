@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LINE Chat</title>
+
+  <meta content="width=device-width,initial-scale=1,shrink-to-fit=no" name="viewport">
+  <link href="./assets/pro.css" rel="stylesheet">
+  <link href="./assets/laicon.min.css" rel="stylesheet">
+  <link href="./assets/koromo.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+    integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+  <link rel="shortcut icon" type="image/x-icon" href="https://d.line-scdn.net/r/web/line-at-chat/img/favicon.ico">
+  <link rel="stylesheet" href="https://static.line-scdn.net/laicon/edge/1.1/laicon.min.css">
+  <link rel="stylesheet" href="./assets/jspkg-archive/jquery.dynatable.css">
+  <style type="text/css">
+    .modal-dialog.modal-full {
+      height: 100vh;
+    }
+  </style>
+  <style type="text/css">
+    .toast-enter-active,
+    .toast-leave-active {
+      transition: opacity .6s ease;
+    }
+
+    .toast-enter,
+    .toast-leave-to {
+      opacity: 0 !important;
+    }
+  </style>
+  <style type="text/css">
+    .chat-item-text:after {
+      content: '\200B';
+    }
+  </style>
+  <style type="text/css">
+    .kv-tag {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      margin: 0;
+      padding: 0 1.75rem 0 .375rem !important;
+      line-height: inherit;
+    }
+
+    a.kv-tag,
+    .kv-tag.tag-readonly {
+      padding: 0 .375rem !important;
+    }
+
+    .kv-tag [data-role="remove"] {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .kv-tag+.kv-tag {
+      margin-left: .375rem;
+    }
+  </style>
+  <style type="text/css">
+    .twitter-typeahead .tt-menu {
+      top: initial !important;
+      position: absolute;
+      left: 0px;
+      z-index: 100;
+      display: none;
+    }
+
+    .twitter-typeahead .tt-open {
+      display: block !important;
+    }
+
+    .twitter-typeahead .tt-suggestion {
+      color: rgba(33, 37, 41, .5) !important;
+    }
+
+    .twitter-typeahead .tt-suggestion.hover {
+      text-decoration: none;
+      background-color: #f8f9fa;
+    }
+
+    .twitter-typeahead .tt-highlight {
+      color: rgba(33, 37, 41, 1) !important;
+    }
+  </style>
+  <style type="text/css">
+    .kv-input-suggestions {
+      position: relative;
+      flex: 1 1 auto;
+      width: auto !important;
+      padding: 0;
+    }
+
+    .kv-input-suggestions .tt-hint {
+      position: absolute;
+      opacity: 0;
+      color: rgba(33, 37, 41, .5);
+      pointer-events: none;
+      border-color: transparent;
+      box-shadow: none;
+      background: none 0% 0% / auto repeat scroll padding-box border-box rgba(0, 0, 0, 0);
+    }
+
+    /* this is used because unmounting the .tt-hint (with v-if) somehow makes the input loose focus */
+    .kv-input-suggestions .tt-hint.visible {
+      opacity: 1;
+    }
+
+    .kv-input-suggestions input {
+      width: 100%;
+      height: 100%;
+      margin-bottom: 0;
+      padding: 0.375rem 0.75rem;
+    }
+
+    .kv-input-suggestions .tt-input {
+      position: relative;
+      vertical-align: top;
+      background-color: transparent;
+      border-radius: 2px;
+    }
+
+    .kv-input-suggestions .tt-input:disabled {
+      background-color: #f8f9fa;
+    }
+
+    .kv-input-suggestions .twitter-typeahead .tt-menu {
+      left: -1px !important;
+      top: calc(100% + 2px) !important;
+    }
+  </style>
+  <style type="text/css">
+    .kv-input-tag {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      padding: .2rem .75rem;
+      border-radius: 2px;
+    }
+
+    .kv-input-disabled {
+      background-color: #f8f9fa;
+    }
+
+    .kv-input-tag .kv-input-suggestions {
+      flex: 1 0 auto;
+      width: 1%;
+      padding: 0;
+      margin-left: -0.375rem;
+    }
+
+    .kv-input-tag .kv-input-suggestions .twitter-typeahead .tt-menu {
+      top: calc(100% + .5rem) !important;
+    }
+
+    .kv-input-tag .kv-tag {
+      flex: 0 0 auto;
+      margin: calc(0.375rem - 0.5px) 0.375rem calc(0.375rem - 0.5px) 0;
+    }
+
+    .kv-input-tag .kv-tag+.kv-tag {
+      margin-left: 0;
+    }
+  </style>
+  <style type="text/css">
+    .bootstrap-tagsinput[data-v-31b3097c] span.kv-tag {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: inline-block;
+    }
+
+    .bootstrap-tagsinput[data-v-31b3097c] .kv-input-suggestions {
+      width: 90% !important;
+    }
+  </style>
+  <style type="text/css">
+    #page {
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      flex-direction: column;
+      min-height: 100vh;
+      min-width: 1280px;
+    }
+
+    #header {
+      -webkit-box-flex: 0;
+      flex: 0 0 60px;
+      height: 60px;
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-pack: justify;
+      justify-content: space-between;
+      -webkit-box-align: stretch;
+      align-items: stretch;
+      background-color: #fff;
+      color: #353a40;
+      border-bottom: 1px solid #edeff0;
+      padding: 0 18px;
+    }
+
+    #header .text-info .badge {
+      border: 1px solid #adb5bd;
+      color: #adb5bd;
+    }
+
+    #header>div {
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-align: stretch;
+      align-items: stretch;
+    }
+
+    #header #header-logo {
+      padding-right: 1rem;
+    }
+
+    #header #header-logo img {
+      height: 23px;
+    }
+
+    #header-menu i {
+      font-size: 1.5rem;
+    }
+
+    #container {
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      flex-direction: column;
+      -webkit-box-flex: 1;
+      flex: 1 1 auto;
+    }
+
+    #nav a {
+      color: #495057;
+    }
+
+    #nav a:hover,
+    #nav a:active,
+    #nav a .active {
+      color: #212529;
+    }
+
+    #wrapper {
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-align: stretch;
+      align-items: stretch;
+      -webkit-box-flex: 1;
+      flex: 1 1 auto;
+    }
+
+    #menu {
+      position: relative;
+      -webkit-box-flex: 0;
+      flex: 0 0 280px;
+      background: #f8f9fa;
+      border-right: 1px solid #dee2e6;
+    }
+
+    #menu a {
+      color: #495057;
+    }
+
+    #menu a:hover,
+    #menu a:active,
+    #menu a.active {
+      color: #00b900;
+    }
+
+    #content {
+      display: -webkit-box;
+      display: flex;
+      position: relative;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      flex-direction: column;
+      -webkit-box-flex: 1;
+      flex: 1 1 auto;
+    }
+
+    #footer {
+      -webkit-box-flex: 0;
+      flex: 0 0 60px;
+      height: 60px;
+      padding: 0 15px;
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+      -webkit-box-pack: justify;
+      justify-content: space-between;
+      border-top: 1px solid #dee2e6;
+    }
+
+    .card-sliding {
+      border-bottom: 0;
+      position: fixed;
+      right: 1rem;
+      bottom: 0;
+      z-index: 1;
+      box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.5);
+      transition: margin 0.3s ease-in-out;
+    }
+
+    .card-sliding .card-body {
+      width: 360px;
+      height: 540px;
+      overflow-y: auto;
+    }
+
+    .card-sliding.compact {
+      margin-bottom: -540px;
+    }
+
+    .sticker-nav {
+      -webkit-box-flex: 0;
+      flex: 0 0 40px;
+      height: 33px;
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      justify-content: center;
+      color: #666f86;
+    }
+
+    .sticker-nav.disabled {
+      opacity: 0.25;
+    }
+
+    .sticker-nav>img {
+      width: 100%;
+      -webkit-filter: grayscale(100%);
+      filter: grayscale(100%);
+    }
+
+    .sticker-nav:hover:not(.disabled) {
+      background: rgba(102, 111, 134, 0.1);
+      color: #666f86;
+    }
+
+    .sticker-nav.active,
+    .sticker-nav.active:not(.disabled) {
+      background: rgba(102, 111, 134, 0.25);
+    }
+
+    .sticker-nav.active>img,
+    .sticker-nav.active:not(.disabled)>img {
+      -webkit-filter: grayscale(0);
+      filter: grayscale(0);
+    }
+
+    .sticker-list {
+      display: -webkit-box;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .sticker-console {
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .sticker-item {
+      -webkit-box-flex: 0;
+      flex: 0 0 108px;
+      height: 100px;
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      justify-content: center;
+    }
+
+    .sticker-item>img {
+      max-width: 108px;
+      max-height: 100px;
+      -webkit-transform: scale(0.8);
+      transform: scale(0.8);
+    }
+
+    .sticker-item:hover>img {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+    }
+
+    .emojione {
+      display: inline-block;
+      height: 1em !important;
+      margin: 0 0.075em;
+    }
+
+    .bootstrap-tagsinput .tag {
+      text-align: left;
+    }
+
+    .bg-backdrop {
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .font-weight-bold {
+      font-weight: 700 !important;
+    }
+  </style>
+  <style type="text/css">
+    .badge-sm {
+      font-size: 50% !important;
+    }
+
+    #header {
+      display: -webkit-box;
+      display: flex;
+    }
+
+    #wrapper {
+      position: relative;
+      display: -webkit-box;
+      display: flex;
+    }
+
+    #wrapper.fixed {
+      height: calc(100vh - 60px);
+    }
+
+    #menu {
+      position: relative;
+      -webkit-box-flex: 0;
+      flex: 0 0 60px;
+      background: #f8f9fa;
+      border-right: 1px solid #dee2e6;
+    }
+
+    #menu #menu-btns {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    #menu #menu-btns .nav-btn {
+      margin: 5px 0;
+      width: 60px;
+      height: 60px;
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      justify-content: center;
+      font-size: 20px;
+      color: rgba(102, 111, 134, 0.25);
+    }
+
+    #menu #menu-btns .nav-btn:hover {
+      color: rgba(102, 111, 134, 0.75);
+    }
+
+    #menu #menu-btns .nav-btn.active {
+      color: #666f86;
+    }
+
+    #content-primary {
+      position: relative;
+      border: 1px solid #dee2e6;
+      border-width: 0 1px;
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      flex-direction: column;
+      -webkit-box-flex: 1;
+      flex: 1 1 auto;
+      min-width: 240px;
+    }
+
+    #content-secondary {
+      position: relative;
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      flex-direction: column;
+      width: 360px;
+      -webkit-box-flex: 0;
+      flex: 0 0 auto;
+    }
+
+    #content-thirdly {
+      position: relative;
+      width: 360px;
+      -webkit-box-flex: 0;
+      flex: 0 0 auto;
+    }
+
+    #editable-unit #editable-notice {
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+      position: absolute;
+      top: calc(-2.25rem - 1px);
+      left: 0;
+      width: 100%;
+      height: 2.25rem;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      padding: 0 0.75rem;
+    }
+
+    #editable-unit #editable-webhook,
+    #editable-unit #editable-outside {
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      justify-content: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      padding: 0 0.75rem;
+    }
+
+    .cmodal {
+      position: fixed;
+      z-index: 1035;
+      color: #fff;
+      display: none;
+    }
+
+    .cmodal.open {
+      display: block;
+    }
+
+    .cmodal a,
+    .cmodal a:hover,
+    .cmodal .close {
+      color: #fff;
+    }
+
+    .cmodal .cmodal-dialog {
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    .cmodal .cmodal-content {
+      width: 100%;
+      height: 100%;
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      flex-direction: column;
+    }
+
+    .cmodal .cmodal-header,
+    .cmodal .cmodal-footer {
+      -webkit-box-flex: 0;
+      flex: 0 0 auto;
+      padding: 1rem;
+    }
+
+    .cmodal .cmodal-header {
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+      -webkit-box-pack: end;
+      justify-content: flex-end;
+    }
+
+    .cmodal .cmodal-body {
+      -webkit-box-flex: 1;
+      flex: 1 1 auto;
+    }
+
+    .cmodal .cmodal-body img,
+    .cmodal .cmodal-body video {
+      max-width: 80vw;
+      max-height: 80vh;
+    }
+
+    .cmodal .cmodal-footer {
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+    }
+
+    .cmodal .cmodal-footer>div {
+      -webkit-box-flex: 1;
+      flex: 1 1 auto;
+    }
+
+    .cmodal .cmodal-footer>div>a {
+      margin: 0 0.4rem;
+    }
+
+    .timeline .timeline-header {
+      display: -webkit-box;
+      display: flex;
+      margin-left: 8rem;
+      height: 2rem;
+      position: relative;
+    }
+
+    .timeline .timeline-header>span {
+      position: absolute;
+      width: 4rem;
+      margin-left: -2rem;
+      text-align: center;
+      font-size: 80%;
+      color: #adb5bd;
+      bottom: 0.5rem;
+      left: 0;
+    }
+
+    .timeline .timeline-header>span:nth-child(2) {
+      left: 25%;
+    }
+
+    .timeline .timeline-header>span:nth-child(3) {
+      left: 50%;
+    }
+
+    .timeline .timeline-header>span:nth-child(4) {
+      left: 75%;
+    }
+
+    .timeline .timeline-header>span:nth-child(5) {
+      left: 100%;
+    }
+
+    .timeline .timeline-body .timeline-line {
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+    }
+
+    .timeline .timeline-body .timeline-line+.timeline-line {
+      margin-top: -1px;
+    }
+
+    .timeline .timeline-body .timeline-line .timeline-label {
+      -webkit-box-flex: 0;
+      flex: 0 0 8rem;
+      padding-right: 1rem;
+      text-align: right;
+    }
+
+    .timeline .timeline-body .timeline-line .timeline-list {
+      border: 1px solid #cfd4da;
+      height: 2.5rem;
+      -webkit-box-flex: 1;
+      flex: 1 1 auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .timeline .timeline-body .timeline-line .timeline-list .timeline-grid {
+      width: 1px;
+      height: 100%;
+      background: rgba(207, 212, 218, 0.5);
+      position: absolute;
+      top: 0;
+      left: 50%;
+    }
+
+    .timeline .timeline-body .timeline-line .timeline-list:before,
+    .timeline .timeline-body .timeline-line .timeline-list:after {
+      content: '';
+      width: 1px;
+      height: 100%;
+      background: rgba(207, 212, 218, 0.5);
+      position: absolute;
+      top: 0;
+    }
+
+    .timeline .timeline-body .timeline-line .timeline-list:before {
+      left: 25%;
+    }
+
+    .timeline .timeline-body .timeline-line .timeline-list:after {
+      left: 75%;
+    }
+
+    .timeline .timeline-body .timeline-line .timeline-list .timeline-list-item {
+      position: absolute;
+      top: 50%;
+      margin-top: -0.75rem;
+      height: 1.5rem;
+      line-height: 1.5rem;
+      display: inline-block;
+      z-index: 1;
+      color: #fff;
+      font-size: 80%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .timeline .timeline-body .timeline-line .timeline-list .timeline-list-item.disabled {
+      opacity: 0.25;
+    }
+  </style>
+
+</head>
+
+<body class="user-select-none">
+  <div id="appLoading" class="text-center" style="display: none;">
+    <div aria-labelledby="exampleModalCenterTitle" class="modal show" id="exampleModalLoading" role="dialog"
+      tabindex="-1" style="display: block; padding-right: 17px;">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="w-100 text-center">
+          <div class="loader loader-primary loader-lg mr-3"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div id="page">
+      <header id="header">
+        <div id="header-upper">
+          <div id="header-logo" class="d-flex align-items-center justify-content-center flex-shrink-0 flex-grow-0">
+            <img src="https://d.line-scdn.net/r/web/line-at-chat/c9e60affc4617bc3273a4feda1177ddc.svg" alt="">
+          </div>
+              <div id="header-user" class="d-flex align-items-center px-3">
+                <button class="btn btn-info" data-toggle="modal" data-target="#sendToAll"><i class="fa fa-user"></i> ส่งข้อความทั้งหมด</button>
+              </div>
+        </div>
+        <div id="header-lower">
+          <div id="header-menu" class="d-flex align-items-center px-3">
+            <div class="dropdown btn-group"><a href="#" class="mx-1 text-muted"><i class="fas fa-fw fa-user-circle"></i></a>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div id="container">
+        <div id="wrapper" class="fixed">
+          <div style="opacity: 0; width: 0px; height: 0px;"></div>
+          <aside id="menu" class="compact">
+            <div id="menu-btns">
+              <a href="/" class="nav-btn"> <i class="fa fa-comment fa-lg"></i></a> 
+              <a href="/" class="nav-btn"><i class="fa fa-cog fa-lg"></i></a>
+              <a href="#" class="nav-btn" onclick="Promotion()"><i class="fas fa-bullhorn fa-lg"></i></a>
+              <a href="#" class="nav-btn" onclick="Official()"><i class="fas fa-at fa-lg"></i></a>
+            </div>
+          </aside>
+          <div id="content-secondary">
+            <div class="d-flex flex-column bg-white h-100">
+              <div class="flex-fill overflow-y-auto overflow-y-auto">
+                <div class="list-group list-group-flush" id="userDirect">
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="content-primary">
+            <div class="p-2 border-bottom flex-grow-0 flex-shrink-0">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="w-50 d-flex align-items-center">
+                  <div class="avatars rounded-circle flex-shrink-0 mr-2 avatars-xs">
+                    <div class="avatars-one" id="pictureUrl">
+                    </div>
+                  </div>
+                  <h4 class="mb-0 text-truncate" id="displayName"></h4>
+                </div>
+                <div class="d-flex align-items-center">
+
+                </div>
+              </div>
+            </div>
+            <div class="p-3 bg-white flex-fill overflow-y-auto" id="messages">
+
+            </div>
+            <div id="editable-unit" class="border-top flex-grow-0 flex-shrink-0 bg-light position-relative">
+              <div class="d-flex justify-content-between align-items-center p-2">
+                <div>
+                  <!-- <a id="sticonButton" href="#sticon" class="text-info mr-2"><i class="fa fa-fw fa-lg"></i></a>  -->
+                  <a href="#" class="text-info mr-2" id="upload"><i class="fas fa-images"></i></a>
+                  <form id="formUpload" method="post" enctype="multipart/form-data">
+                    <input id="FileUpload" name="FileUpload" type="file" multiple="multiple" class="d-none">
+                  </form>
+                </div>
+              </div>
+              <div class="bg-white border-top wrapper">
+                <input type="hidden" id="userId">
+                <input type="hidden" id="official_token">
+                <div id="editable-input" class="p-2 h-max-160 overflow-y-auto d-inline-block w-100">
+                  <form method="post" id="sendMessage">
+                    <textarea type="text" class="form-control" id="m" name="m" style="border:0px;"></textarea>
+                  </form>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="content-thirdly">
+            <div class="d-flex flex-column h-100 overflow-y-auto">
+              <div class="flex-grow-0 flex-shrink-0 bg-white position-relative py-3 px-3">
+                <div class="text-center">
+                  <div class="avatars rounded-circle mb-3 avatars-xl">
+                    <div class="avatars-one" id="_pictureUrl"></div>
+                  </div>
+                  <div>
+                    <div>
+                      <h3 class="mb-0 d-flex align-items-center justify-content-center"><span class="text-truncate user-select-text" id="_displayName"></span><span id="_officialName"></span></h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-grow-0 flex-shrink-0 bg-white position-relative px-3 userInfo" style="display: none">
+                <div class="">
+                  <center><button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#edituserInfo">แก้ไขข้อมูลลูกค้า</button></center><br>
+                  <div>ชื่อ - นามสกุล : <b><span class="firstname"></span> <span class="lastname"></span></b> </div>
+                  <div>ไอดีไลน์ : <b><span class="idline"></span></b></div>
+                  <div>เบอร์โทรศัพท์ : <b><span class="phonenumber"></span></b></div>
+                  <div>บัญชี : <b><span class="bank"></span></b></div>
+                  <div><a href="#" onclick="Transaction()">ยอดฝาก ยอดถอน</a></div>
+                  <div>โปรโมชั่น : <b><span class="promotion"></span></b></div>
+                </div>
+              </div>
+              <hr>
+              <div class="flex-grow-0 flex-shrink-0 bg-white position-relative px-3">
+                <div id="images">
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="sendToAll" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ส่งข้อความทั้งหมด</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form action="" method="post">
+                  <div class="form-group">
+                    <label for="">ข้อความ</label>
+                    <textarea name="" id="broadcast_message" cols="30" rows="10" class="form-control"></textarea>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="SendToAll()">ส่งข้อความทั้งหมด</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="edituserInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ส่งข้อความทั้งหมด</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form id="formEdituserInfo" method="post">
+                  <div class="form-group">
+                    <label for="">ชื่อ : </label>
+                    <input type="text" class="form-control" id="firstname" name="firstname">
+                  </div>
+                  <div class="form-group">
+                    <label for="">นามสกุล : </label>
+                    <input type="text" class="form-control" id="lastname" name="lastname">
+                  </div>
+                  <div class="form-group">
+                    <label for="">ไอดีไลน์ : </label>
+                    <input type="text" class="form-control" id="idline" name="idline">
+                  </div>
+                  <div class="form-group">
+                    <label for="">เบอร์โทรศัพท์ : </label>
+                    <input type="text" class="form-control" id="phonenumber" name="phonenumber">
+                  </div>
+                  <div class="form-group">
+                    <label for="">บัญชี : </label>
+                    <input type="text" class="form-control" id="bank" name="bank">
+                  </div>
+                  <div class="form-group">
+                    <label for="">โปรโมชั่น : </label>
+                    <select name="promotion" id="promotion" class="form-control">
+                      <option value="1">1</option>
+                    </select>
+                  </div>
+                  <button type="submit" class="btn btn-primary">แก้ไข</button>
+                </form>
+              </div>
+              <div class="modal-footer">
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="PromotionData" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">โปรโมชั่น</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form id="formPromotionAdd" method="post">
+                  <div class="form-group">
+                    <label for="">รายการโปรโมชั่น</label>
+                    <input type="text" name="title" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary">บันทึก</button>
+                  </div>
+                </form>
+                <table class="table table-bordered">
+                  <thead>
+                    <th>ลำดับ</th>
+                    <th>รายการ</th>
+                    <th></th>
+                  </thead>
+                  <tbody>
+                    
+                  </tbody>
+                </table>
+              </div>
+              <div class="modal-footer">
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="transaction_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ยอดฝาก ถอน</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form id="formTransactionAdd" method="post">
+                  <div class="row">
+                    <div class="col-xl-2">
+                      <div class="form-group">
+                        <label for="">รายการ</label>
+                        <select name="cmd" id="cmd" class="form-control">
+                          <option value="ฝาก">ฝาก</option>
+                          <option value="ถอน">ถอน</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-xl-6">
+                      <div class="form-group">
+                        <label for="">จำนวนเงิน</label>
+                        <input type="text" name="amount" id="amount" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-xl-4">
+                      <div class="form-group">
+                        <label for="">วันเวลา</label>
+                        <input type="text" name="date" id="date" class="form-control">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <button class="btn btn-success">เพิ่ม</button>
+                  </div>
+                </form>
+                <hr>
+                <table class="table table-bordered" id="transactionData">
+                  <thead>
+                    <th>ลำดับ</th>
+                    <th data-dynatable-column="cmd">รายการ</th>
+                    <th data-dynatable-column="amount">จำนวน</th>
+                    <th data-dynatable-column="date">วัน เวลา</th>
+                  </thead>
+                  <tbody>
+                    
+                  </tbody>
+                </table>
+                <div id="demo"></div>
+              </div>
+              <div class="modal-footer">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="official_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Line Official</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form id="formOfficialAdd" method="post">
+                  <div class="row">
+                    <div class="col-xl-4">
+                      <div class="form-group">
+                        <label for="">Official</label>
+                        <input type="text" name="name" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-xl-4">
+                      <div class="form-group">
+                        <label for="">Official Destination</label>
+                        <input type="text" name="id" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-xl-4">
+                      <div class="form-group">
+                        <label for="">Official Token</label>
+                        <input type="text" name="token" class="form-control">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <button class="btn btn-success">เพิ่ม</button>
+                  </div>
+                </form>
+                <hr>
+                <div class="table-responsive">
+                  <table class="table table-bordered" id="officialData">
+                    <thead>
+                      <th>ลำดับ</th>
+                      <th>Official</th>
+                      <th>Official Destination</th>
+                      <th>Official Token</th>
+                      <th></th>
+                    </thead>
+                    <tbody>
+                      
+                    </tbody>
+                  </table>  
+                </div>
+              </div>
+              <div class="modal-footer">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <audio id="line" src="./assets/audio/line.mp3" preload="auto"></audio>
+</body>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinysort/3.2.5/tinysort.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="./assets/jspkg-archive/jquery.dynatable.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+<script>
+  if(!Cookies.get('email') && !Cookies.get('pass')){
+    window.location.href = '/'
+  }
+  var socket = io();
+  const msgUnread = []
+
+  const MONTH_NAMES = [
+    'ม.ค', 'ก.พ', 'มี.ค', 'ม.ย', 'พ.ค', 'มิ.ย',
+    'ก.ค', 'ส.ค', 'ก.ย', 'ต.ค', 'พ.ย', 'ธ.ค'
+  ];
+
+  function simpleTemplating(data) {
+    var html = '<ul>';
+    $.each(data, function(index, item){
+        html += '<li>'+ item +'</li>';
+    });
+    html += '</ul>';
+    return html;
+  }
+  
+  function Promotion(){
+    $.ajax({
+      type: "GET",
+      url: "/promotion",
+      dataType: "text",
+      cache: false,
+      success: function (data) {
+        var i = 1
+        var json = JSON.parse(data)
+        
+        var i = 1
+        json.forEach(element => {
+          $("#PromotionData tbody").append(
+            '<tr id=\''+element._id+'_data\'>'
+              +'<td>'+i+'</td>'
+              +'<td id='+element._id+'>'+element.title+'</td>'
+              +'<td>'
+                +'<button class="btn btn-info btn-sm" onclick="promotionEdit(\''+element._id+'\',\''+element.title+'\')"><i class="fa fa-cog fa-lg"></i></button>'
+                +'<button class="btn btn-danger btn-sm" onclick="promotionDelete(\''+element._id+'\')"><i class="fa fa-trash fa-lg"></i></button>'
+              +'</td>'
+            +'</tr>'
+          )
+          i++
+        });
+        
+      },
+      error: function (e) {
+        console.log("ERROR : ", e);
+      }
+    });
+    
+    $('#PromotionData').modal('show')
+  }
+
+  function promotionEdit(id,title,cmd = null){
+    var $this = $("#"+id)
+    $this.html(
+      '<form id="formPromotionEdit" method="post">'
+        +'<div class="input-group mb-3">'
+          +'<input type="text" class="form-control" id=\''+id+'_title\' value=\''+title+'\'>'
+          +'<div class="input-group-append">'
+            +'<button class="btn btn-info" type="button" onclick="EditPromotion(\''+id+'\')">แก้ไข</button>'
+          +'</div>'
+        +'</div>'
+        +'<input type="hidden" name="id" class="form-control" value=\''+id+'\'>'
+      +'</form>'
+    )
+  }
+
+  function EditPromotion(id){
+    $.ajax({
+      type: "POST",
+      url: "/promotionedit",
+      data:"id="+id+"&title="+$("#"+id+"_title").val(),
+      dataType: "text",
+      cache: false,
+      success: function (data) {
+        var json = JSON.parse(data)
+        if(json.res == "SUCCESS") $("#"+id).html($("#"+id+"_title").val())
+      },
+      error: function (e) {
+        console.log("ERROR : ", e);
+      }
+    });
+  }
+
+  function promotionDelete(id){
+    $.ajax({
+      type: "POST",
+      url: "/promotiondelete",
+      data:"id="+id,
+      dataType: "text",
+      cache: false,
+      success: function (data) {
+        var json = JSON.parse(data)
+        if(json.res == "SUCCESS") $("#"+id+"_data").remove()
+      },
+      error: function (e) {
+        console.log("ERROR : ", e);
+      }
+    });
+  }
+  
+  function Official(){
+    $.ajax({
+      type: "GET",
+      url: "/official",
+      cache: false,
+      success: function (data) {
+        var i = 1
+        data.forEach(element => {
+          $("#officialData tbody").append(
+            '<tr id=\''+element._id+'_data\'>'
+              +'<td>'+i+'</td>'
+              +'<td id='+element._id+'>'+element.official_profile+'</td>'
+              +'<td class="text-truncate">'+element.official_id+'</td>'
+              +'<td class="text-truncate">'+element.official_token+'</td>'
+              +'<td>'
+                +'<button class="btn btn-info btn-sm" onclick="officialEdit(\''+element._id+'\',\''+element.title+'\')"><i class="fa fa-cog fa-lg"></i></button>'
+                +'<button class="btn btn-danger btn-sm" onclick="officialDelete(\''+element._id+'\')"><i class="fa fa-trash fa-lg"></i></button>'
+              +'</td>'
+            +'</tr>'
+          )
+          i++
+        });
+      },
+      error: function (e) {
+        console.log("ERROR : ", e);
+      }
+    });
+    $('#official_modal').modal('show')
+  }
+
+  function officialDelete(id){
+    $.ajax({
+      type: "POST",
+      url: "/officialdelete",
+      data:"id="+id,
+      dataType: "text",
+      cache: false,
+      success: function (data) {
+        var json = JSON.parse(data)
+        if(json.res == "SUCCESS") $("#"+id+"_data").remove()
+      },
+      error: function (e) {
+        console.log("ERROR : ", e);
+      }
+    });
+  }
+  
+  function Transaction(){
+    $.ajax({
+      type: "POST",
+      url: "/transaction",
+      data: "userId="+$("#userId").val(),
+      dataType: "text",
+      cache: false,
+      success: function (data) {
+        if(data){
+          var i = 1
+          var json = JSON.parse(data)
+          var $records = $('#demo'), myRecords = json;
+          $('#transactionData').dynatable({
+            dataset: {
+              records: myRecords
+            }
+          });
+        } else {
+        }
+      },
+      error: function (e) {
+        console.log("ERROR : ", e);
+      }
+    });
+    $('#transaction_modal').modal('show')
+  }
+
+  function getFormattedDate(date, prefomattedDate = false, hideYear = false) {
+    const day = date.getDate();
+    const month = MONTH_NAMES[date.getMonth()];
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    let minutes = date.getMinutes();
+
+    if (minutes < 10) {
+      // Adding leading zero to minutes
+      minutes = `0${ minutes }`;
+    }
+
+    if (prefomattedDate) {
+      // Today at 10:20
+      // Yesterday at 10:20
+      return `${ prefomattedDate } at ${ hours }:${ minutes }`;
+    }
+
+    if (hideYear) {
+      // 10. January at 10:20
+      return `${ day }. ${ month } at ${ hours }:${ minutes }`;
+    }
+
+    // 10. January 2017. at 10:20
+    return `${ day }. ${ month } ${ year }. at ${ hours }:${ minutes }`;
+  }
+
+  // --- Main function
+  function timeAgo(dateParam) {
+    if (!dateParam) {
+      return null;
+    }
+
+    const date = typeof dateParam === 'object' ? dateParam : new Date(dateParam);
+    const DAY_IN_MS = 86400000; // 24 * 60 * 60 * 1000
+    const today = new Date();
+    const yesterday = new Date(today - DAY_IN_MS);
+    const seconds = Math.round((today - date) / 1000);
+    const minutes = Math.round(seconds / 60);
+    const isToday = today.toDateString() === date.toDateString();
+    const isYesterday = yesterday.toDateString() === date.toDateString();
+    const isThisYear = today.getFullYear() === date.getFullYear();
+
+
+    if (seconds < 5) {
+      return 'เมื่อสักครู่';
+    } else if (seconds < 60) {
+      return `${ seconds } วินาที ที่ผ่านมา`;
+    } else if (seconds < 90) {
+      return 'เมื่อไม่กี่นาทีที่ผ่านมา';
+    } else if (minutes < 60) {
+      return `${ minutes } นาที ที่ผ่านมา`;
+    } else if (isToday) {
+      return getFormattedDate(date, 'วันนี้'); // Today at 10:20
+    } else if (isYesterday) {
+      return getFormattedDate(date, 'เมื่อวาน'); // Yesterday at 10:20
+    } else if (isThisYear) {
+      return getFormattedDate(date, false, true); // 10. January at 10:20
+    }
+
+    return getFormattedDate(date); // 10. January 2017. at 10:20
+  }
+
+  function sort(){
+    tinysort('div#userDirect>a',{attr:'data-timestamp',order:'desc'});
+  }
+
+  function AutoScorll(id){
+    var msg = $('#messages');
+    var height = msg[0].scrollHeight;
+    msg.animate({scrollTop:height}, 500, 'swing');
+  }
+
+  function SendToAll(){
+    const broadcastMessage = $("#broadcast_message").val()
+    socket.emit('s2a',{text:broadcastMessage})
+
+    let userDirect = $("#userDirect a").length
+    for (let index = 0; index < userDirect; index++) {
+      $("#"+$("#userDirect a")[index].id+" .lasttext").text(broadcastMessage)
+      if($("#userId").val() == $("#userDirect a")[index].id.split("_")[0]){
+        $("#"+$("#userId").val()+"_inbox").append(
+        '<div class="chat chat-text-dark chat-reverse chat-secondary">'
+          +'<div class="chat-content">'
+            +'<div class="chat-body w-max-520">'
+              +'<div class="chat-main">'
+                +'<div class="chat-item baloon">'
+                  +'<div class="chat-item-text user-select-text">'+broadcastMessage+'</div>'
+                  +'</div>'
+                +'</div>'
+              +'<div class="chat-sub user-select-text"><span>20.37 น.</span>'
+                +'</div>'
+              +'</div>'
+            +'</div>'
+          +'</div>') 
+        AutoScorll()
+      }
+    }
+  }
+
+  $(function(){
+    $("#formTransactionAdd").submit(function( event ) {
+      var form = $(this)
+      $.ajax({
+        type: "POST",
+        url: "/transactionadd",
+        data: form.serialize()+"&userId="+$("#userId").val(),
+        dataType: "text",
+        cache: false,
+        success: function (data) {
+          $("#transactionData").append(
+            '<tr>'
+              +'<td></td>'
+              +'<td>'+$("#cmd").val()+'</td>'
+              +'<td>'+$("#amount").val()+'</td>'
+              +'<td>'+$("#date").val()+'</td>'
+            +'</tr>'
+          ) 
+        },
+        error: function (e) {
+          console.log("ERROR : ", e);
+        }
+      });
+
+      event.preventDefault();
+    });
+
+    $("#formPromotionAdd").submit(function( event ) {
+      var form = $(this)
+      $.ajax({
+        type: "POST",
+        url: "/promotionadd",
+        data: form.serialize(),
+        dataType: "text",
+        cache: false,
+        success: function (data) {
+          const json = JSON.parse(data)
+          $("#PromotionData tbody").append(
+            '<tr id=\''+json.res._id+'_data\'>'
+              +'<td></td>'
+              +'<td id='+json.res._id+'>'+json.res.title+'</td>'
+              +'<td>'
+                +'<button class="btn btn-info btn-sm" onclick="promotionEdit(\''+json.res._id+'\',\''+json.res.title+'\')"><i class="fa fa-cog fa-lg"></i></button>'
+                +'<button class="btn btn-danger btn-sm" onclick="promotionDelete(\''+json.res._id+'\')"><i class="fa fa-trash fa-lg"></i></button>'
+              +'</td>'
+            +'</tr>'
+          )
+        },
+        error: function (e) {
+          console.log("ERROR : ", e);
+        }
+      });
+
+      event.preventDefault();
+    });
+    
+    $("#formOfficialAdd").submit(function( event ) {
+      var form = $(this)
+      $.ajax({
+        type: "POST",
+        url: "/officialadd",
+        data: form.serialize(),
+        dataType: "text",
+        cache: false,
+        success: function (data) {
+          console.log(data);
+        },
+        error: function (e) {
+          console.log("ERROR : ", e);
+        }
+      });
+
+      event.preventDefault();
+    });
+
+    $("#formEdituserInfo").submit(function( event ) {
+      var form = $(this)
+      var bgImg = $("#_pictureUrl").css('background-image');
+      
+      $.ajax({
+        type: "POST",
+        url: "/edituserinfo",
+        data: form.serialize()+"&displayName="+$("#_displayName").text()+"&pictureUrl="+bgImg.split("\"")[1]+"&userId="+$("#userId").val(),
+        dataType: "text",
+        cache: false,
+        success: function (data) {
+          console.log(data);
+        },
+        error: function (e) {
+          console.log("ERROR : ", e);
+        }
+      });
+
+      event.preventDefault();
+    });
+
+    $('#upload').on('click',function(evt){
+         evt.preventDefault();
+         $('#FileUpload').trigger('click');
+    });
+
+    var files;
+
+    $('#FileUpload').on('change', prepareUpload);
+
+    function prepareUpload(event){
+
+      var form = $("#formUpload")[0]
+      var data = new FormData(form)
+
+      $.ajax({
+        type: "POST",
+        enctype: 'multipart/form-data',
+        url: "/upload",
+        data: data,
+        processData: false,
+        contentType: false,
+        cache: false,
+        success: function (data) {
+          socket.emit('s2u',{type:'image',userId:$("#userId").val(),official_token:$("#official_token").val(),image:data})
+          
+          $("#"+$("#userId").val()+"_inbox").append(
+            '<div class="chat chat-text-dark chat-reverse chat-secondary">'
+              +'<div class="chat-content">'
+                +'<div class="chat-body w-max-520">'
+                  +'<div class="chat-main">'
+                    +'<div class="chat-item baloon">'
+                      +'<div class="chat-item-text user-select-text"><img src="uploads/'+data+'" style="width:300px;"></div>'
+                    +'</div>'
+                  +'</div>'
+                  +'<div class="chat-sub user-select-text"><span>20.37 น.</span>'
+                  +'</div>'
+                +'</div>'
+              +'</div>'
+            +'</div>')
+          $("#"+$('#userId').val()+"_direct .lasttext").text("คุณส่งรูปภาพ")
+          AutoScorll()
+        },
+        error: function (e) {
+          console.log("ERROR : ", e);
+        }
+      });
+      
+    }
+      
+    $.get('/userDirect',function(data){
+      data.forEach(element => {
+        msgUnread.push({userId:element.userId,unread:element.unread})
+        var unread = ""
+        var active = ""
+        if(element.unread == 0) {
+          unread = ''; 
+          active = '';
+        } else {
+          unread = element.unread; 
+          active = 'active'
+        }
+
+        var msg = ""
+        var lasttext = element.lasttext
+        
+        if(lasttext.user){
+          if(lasttext.user.type == "text") msg = element.lasttext.user.text
+          if(lasttext.user.type == "image") msg = 'ส่งรูปภาพ'
+          if(lasttext.user.type == "sticker") msg = 'ส่งสติกเกอร์'  
+        }
+        
+        if(lasttext.administrator){
+          if(lasttext.administrator.type == "text") msg = element.lasttext.administrator.text
+          if(lasttext.administrator.type == "image") msg = 'คุณส่งรูปภาพ'
+          if(lasttext.administrator.type == "sticker") msg = 'ส่งสติกเกอร์'  
+        }
+        
+        var time = timeAgo(new Date(element.lasttimestamp))
+        
+        $("#userDirect").append(
+          '<a href="#" id=\''+element.userId+'_direct\' data-timestamp=\''+element.lasttimestamp+'\' class="list-group-item list-group-item-action d-flex flex-nowrap '+active+' border-0" onClick="showMsg(\''+element.userId+'\',\''+element.official_token+'\')">'
+            +'<div class="avatars rounded-circle mr-2 flex-shrink-0 flex-grow-0 avatars-sm">'
+              +'<div class="avatars-one" style="background-image: url('+element.userProfile.pictureUrl+');">'
+              +'</div>'
+            +'</div>'
+            +'<div class="flex-1 align-self-center w-min-0">'
+              +'<div class="d-flex align-items-center mb-1">'
+                +'<h6 class="mb-0 text-truncate">'+element.userProfile.displayName+ ' <small>#'+ element.official_profile +'</small></h6>'
+              +'</div>'
+              +'<div class="text-muted small text-truncate lasttext">'+msg+'</div>'
+            +'</div>'
+            +'<div class="flex-shrink-0 flex-grow-0 ml-3 d-flex flex-column justify-content-between">'
+              +'<div class="text-right small text-muted time">'+time+'</div>'
+              +'<div class="text-right">'
+                +'<span class="badge badge-danger unread">'+unread+'</span>'
+              +'</div>'
+            +'</div>'
+            +'<div class="vue-portal-target "></div>'
+          +'</a>'
+        )        
+      });
+
+      sort()
+    })
+
+    $('#m').on('keydown', function(event) {
+    if (event.keyCode == 13)
+        if (!event.shiftKey) $('#sendMessage').submit();
+    });
+
+    $('#sendMessage').on('submit', function() {
+        socket.emit('s2u',{type:'text',userId:$("#userId").val(),official_token:$("#official_token").val(),msg:$("#m").val()})
+        
+        $("#"+$("#userId").val()+"_inbox").append(
+        '<div class="chat chat-text-dark chat-reverse chat-secondary">'
+          +'<div class="chat-content">'
+            +'<div class="chat-body w-max-520">'
+              +'<div class="chat-main">'
+                +'<div class="chat-item baloon">'
+                  +'<div class="chat-item-text user-select-text">'+$("#m").val()+'</div>'
+                  +'</div>'
+                +'</div>'
+              +'<div class="chat-sub user-select-text"><span>20.37 น.</span>'
+                +'</div>'
+              +'</div>'
+            +'</div>'
+          +'</div>'
+        )
+        $("#m").val('')
+        AutoScorll()
+        return false
+    });
+
+    setInterval(() => {
+      $.get('/userDirect',function(data){
+        data.forEach(element => {
+
+        })
+      })  
+    }, 5000);
+  })
+
+  socket.on('s2direct',function(res){
+    
+    if(res.text.type == "text") msg = res.text.text
+    if(res.text.type == "image") msg = 'ส่งรูปภาพ'
+    if(res.text.type == "sticker") msg = 'ส่งสติกเกอร์'
+
+    $("#"+res.userId+"_direct .lasttext").html(msg)
+    $("#"+res.userId+"_direct").attr('data-timestamp',res.timestamp)
+
+    const obj = msgUnread.find(x => x.userId === res.userId)
+
+    if($("#"+res.userId+"_direct").length){
+      if($("#userId").val() == res.userId){
+        obj.unread = 0
+        var time = timeAgo(new Date(res.timestamp))
+        socket.emit('read',res.userId)
+        $("#"+res.userId+"_direct").removeClass('active')
+        $("#"+res.userId+"_direct .time").html(time)
+      } else {
+        var time = timeAgo(new Date(res.timestamp))
+        obj.unread = obj.unread + 1
+        $("#"+res.userId+"_direct").addClass('active')
+        $("#"+res.userId+"_direct .unread").html(obj.unread)
+        $("#"+res.userId+"_direct .time").html(time)
+      }  
+    } else {
+      msgUnread.push({userId:res.userId,unread:1})
+        
+      $("#userDirect").append(
+      '<a href="#" id=\''+res.userId+'_direct\' data-timestamp=\''+res.timestamp+'\' class="list-group-item list-group-item-action d-flex flex-nowrap active border-0" onClick="showMsg(\''+res.userId+'\',\''+res.official_token+'\')">'
+        +'<div class="avatars rounded-circle mr-2 flex-shrink-0 flex-grow-0 avatars-sm">'
+          +'<div class="avatars-one" style="background-image: url('+res.userProfile.pictureUrl+');">'
+            +'</div>'
+          +'</div>'
+        +'<div class="flex-1 align-self-center w-min-0">'
+          +'<div class="d-flex align-items-center mb-1">'
+            +'<h6 class="mb-0 text-truncate">'+res.userProfile.displayName+ ' <small>#'+ res.official_profile
+                +'</small></h6>'
+            +'</div>'
+          +'<div class="text-muted small text-truncate" id=\''+res.userId+'_lasttext\'>'+msg+'</div>'
+          +'</div>'
+        +'<div class="flex-shrink-0 flex-grow-0 ml-3 d-flex flex-column justify-content-between">'
+          +'<div class="text-right small text-muted time">'+time+'</div>'
+          +'<div class="text-right">'
+            +'<span class="badge badge-danger unread">1</span>'
+            +'</div>'
+          +'</div>'
+        +'<div class="vue-portal-target "></div>'
+        +'</a>'
+      )
+    }
+    
+    playAudio()
+    sort()
+  })
+
+  const socketArr = []
+  function showMsg(userId,token){
+    $("#images").empty()
+    $(".firstname").empty()
+    $(".lastname").empty()
+    $(".idline").empty()
+    $(".phonenumber").empty()
+    $(".bank").empty()
+    $(".promotion").empty()
+
+    $(".userInfo").show()
+    $("#content-primary").removeClass('d-flex align-items-center justify-content-center bg-light overflow-y-auto')
+    $("#content-thirdly").show()
+
+    $("#messages").html("<div id='"+userId+"_inbox'></div>")
+    socketArr.push({userId:userId})
+
+    $("#userId").val(userId)
+    $("#official_token").val(token)
+    $.get('/userDirect/'+userId,function(data){
+      $("#pictureUrl").css("background-image",'url('+data.userProfile[0].pictureUrl+')')
+      $("#displayName").html(data.userProfile[0].displayName + " #<small>"+data.official_profile+"</small>")
+
+      $("#_pictureUrl").css("background-image",'url('+data.userProfile[0].pictureUrl+')')
+      $("#_displayName").html(data.userProfile[0].displayName + "<br>")
+      $("#_officialName").html("<small>"+data.official_profile+"</small>")
+      
+      $(".firstname").html(data.userProfile[0].firstname)
+      $(".lastname").html(data.userProfile[0].lastname)
+      $(".idline").html(data.userProfile[0].idline)
+      $(".phonenumber").html(data.userProfile[0].phonenumber)
+      $(".bank").html(data.userProfile[0].bank)
+      $(".promotion").html(data.userProfile[0].promotion)
+
+      $("#firstname").val(data.userProfile[0].firstname)
+      $("#lastname").val(data.userProfile[0].lastname)
+      $("#idline").val(data.userProfile[0].idline)
+      $("#phonenumber").val(data.userProfile[0].phonenumber)
+      $("#bank").val(data.userProfile[0].bank)
+      $("#promotion").val(data.userProfile[0].promotion)
+      data.messages.forEach(element => {
+
+        if(element.user){
+          var msg = ""
+          if(element.user.text.type == "text") msg = element.user.text.text
+          if(element.user.text.type == "image") {
+            $("#images").append("<img src='images/"+element.user.text.id+".jpg' style='width:150px;'>"); 
+            msg = "<img src='images/"+element.user.text.id+".jpg' style='width:300px;'>";
+          }
+
+          if(element.user.text.type == "sticker") msg = 'ส่งสติกเกอร์'
+
+          $("#"+userId+"_inbox").append(
+            '<div class="chat chat-text-dark chat-secondary">'
+              +'<div class="avatars rounded-circle flex-grow-0 flex-shrink-0 avatars-xs">'
+                +'<div class="avatars-one" style="background-image: url('+data.userProfile[0].pictureUrl+');">'
+                +'</div>'
+              +'</div>'
+              +'<div class="chat-content">'
+                +'<div class="chat-body w-max-520">'
+                  +'<div class="chat-main">'
+                    +'<div class="chat-item baloon">'
+                      +'<div class="chat-item-text user-select-text">'+msg+'</div>'
+                    +'</div>'
+                  +'</div>'
+                  +'<div class="chat-sub user-select-text"><span>0.12 น.</span></div>'
+                +'</div>'
+              +'</div>'
+            +'</div>'
+          )
+        }
+        if(element.administrator) {
+          
+          var msg = ""
+          if(element.administrator.text.type == "text") msg = element.administrator.text.text
+          if(element.administrator.text.type == "image") {
+            msg = "<img src='images/"+element.administrator.text.id+".jpg' style='width:300px;'>"
+            if(element.administrator.text.id == undefined) msg = "<img src='uploads/"+element.administrator.text.image+"' style='width:300px;'>"
+          }
+            
+          if(element.administrator.text.type == "sticker") msg = 'ส่งสติกเกอร์'
+          $("#"+userId+"_inbox").append(
+            '<div class="chat chat-text-dark chat-reverse chat-secondary">'
+              +'<div class="chat-content">'
+                +'<div class="chat-body w-max-520">'
+                  +'<div class="chat-main">'
+                    +'<div class="chat-item baloon">'
+                      +'<div class="chat-item-text user-select-text">'+msg+'</div>'
+                    +'</div>'
+                  +'</div>'
+                  +'<div class="chat-sub user-select-text"><span>20.37 น.</span>'
+                  +'</div>'
+                +'</div>'
+              +'</div>'
+            +'</div>')
+        }        
+      })
+      setTimeout(() => {
+        AutoScorll()  
+      }, 500);
+    })
+
+    socketArr.forEach(element => {
+      if(element.userId == userId){
+        if(!socket.hasListeners(userId)){
+          socket.on(userId,function(res){
+            if(res.userId == userId){
+              var msg
+              var type = res.text.type
+              if(type == "text") msg = res.text.text
+              if(type == "image") {
+                msg = "<img src='./assets/images/loading.gif' id='"+res.text.id+"' style='width:32px;'>"
+                AutoScorll()
+                setTimeout(() => {
+                  $("#"+res.text.id).css('width','300px')                  
+                  $("#"+res.text.id).attr('src','images/'+res.text.id+'.jpg')
+                  
+                  AutoScorll()
+                }, 2000); 
+              }
+              if(type == "sticker") msg = 'ส่งสติกเกอร์'
+
+              $("#"+userId+"_inbox").append(
+                '<div class="chat chat-text-dark chat-secondary">'
+                  +'<div class="avatars rounded-circle flex-grow-0 flex-shrink-0 avatars-xs">'
+                    +'<div class="avatars-one" style="background-image: url('+res.userProfile.pictureUrl+');">'
+                    +'</div>'
+                  +'</div>'
+                  +'<div class="chat-content">'
+                    +'<div class="chat-body w-max-520">'
+                      +'<div class="chat-main">'
+                        +'<div class="chat-item baloon">'
+                          +'<div class="chat-item-text user-select-text">'+msg+'</div>'
+                        +'</div>'
+                      +'</div>'
+                      +'<div class="chat-sub user-select-text"><span>0.12 น.</span></div>'
+                    +'</div>'
+                  +'</div>'
+                +'</div>'
+              )
+              playAudio()
+              AutoScorll()
+            }
+          })   
+        }   
+      } else {
+        socket.removeListener(element)
+      }
+    });
+
+    $("#"+userId+"_direct").removeClass('active')
+    $("#"+userId+"_direct .unread").html('')
+    socket.emit('read',userId)
+  }
+
+  function playAudio(){
+    document.getElementById('line').play();
+  }
+
+</script>
+</html>

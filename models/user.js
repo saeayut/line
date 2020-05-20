@@ -1,11 +1,31 @@
-    // define Schema
-    var UserSchema = mongoose.Schema({
-        userId: String,
-        displayName: String,
-        pictureUrl: String,
-        statusMessage: String,
-        message:String
-      });
-   
-      // compile schema to model
-      var User = mongoose.model('User', UserSchema, 'user');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+
+var userSchema = new Schema({
+    userId:{
+        type:String
+    },
+    messages:{
+        type:Array
+    },
+    userProfile:{
+        type:Array
+    },
+    official_profile:{
+        type:String  
+    },
+    official_Token:{
+        type:String
+    },
+    destination:{
+        type:String
+    },
+    unread:{
+        type:Number
+    },
+    transaction:{
+        type:Array
+    }
+});
+ 
+module.exports = mongoose.model('user', userSchema);

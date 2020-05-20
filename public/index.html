@@ -1,15 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  </head>
-  <body>
-    <script>
-    // similar behavior as an HTTP redirect
-    window.location.replace("template/classic/dashboard-one.html");
-    </script>
-  </body>
+<head>
+  <title>Line Official Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--===============================================================================================-->
+  <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="./assets/vendor/bootstrap/css/bootstrap.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="./assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="./assets/fonts/iconic/css/material-design-iconic-font.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="./assets/vendor/animate/animate.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="./assets/vendor/css-hamburgers/hamburgers.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="./assets/vendor/animsition/css/animsition.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="./assets/vendor/select2/select2.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="./assets/vendor/daterangepicker/daterangepicker.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="./assets/css/util.css">
+  <link rel="stylesheet" type="text/css" href="./assets/css/main.css">
+  <!--===============================================================================================-->
+  
+  <link rel="shortcut icon" type="image/x-icon" href="https://d.line-scdn.net/r/web/line-at-chat/img/favicon.ico">
+</head>
+
+<body>
+
+  <div class="limiter">
+    <div class="container-login100">
+      <div class="wrap-login100">
+        <form class="login100-form validate-form" method="POST">
+          <span class="login100-form-title p-b-26">
+            <center>
+              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALIAAABACAMAAACJDt1IAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAHvUExURUdwTADCAAC/AAC+AAC9AAC/AADAAAD/AADEAAC+AAC/AAC/AAD/AAC/AADBAAC+AAC+AAC9AAC/AAC+AAC6AAC6AAC+AADAAAD/AADCAADMAADaAAC6AAC+AADEAAC6AAC/AADMAAC/AAC/AADAAAC/AAC+AAC8AAC6AAC+AAC+AAC+AAC6AAC+AADAAAC/AAC/AADGAAC+AAC+AADQAAC+AAC6AAC+AAC+AAC+AAC+AADBAAC/AADEAAC6AAC+AAC+AADFAAC/AADFAADMAAC/AAC/AAC+AAC+AAC/AAC/AAC9AAC9AAC/AAC/AAC+AAC+AAC+AAC+AADIAAC/AAC+AAC/AADAAAC+AAC+AAC+AAC+AADDAADEAADGAAC8AAC/AAC/AAC/AAC6AAC+AAC9AADGAAC/AADBAADAAAC6AAC+AAC7AAC7AAC9AAC+AAC+AAC+AAC+AADBAADAAAC8AAC+AAC/AADJAAC9AAC/AAC+AADAAAC+AAC9AADUAAC/AAC+AAC+AADCAAC/AAC8AAC+AAC/AAC/AADDAAC8AAC+AAC+AAC/AAC/AAC/AAC+AAC+AAC+AAC9AAC/AAC+AADBAAC5AAC9AADBAAC/AAC8AAC+AAC+AAC+AADCAAC+AAC/AAC/AAC+AAC+AP/T3LYAAACkdFJOUwAqEG7DvCkBGmdlRAKJRuSLnyAz+/79JQMmCgfn/CPrWQUMFEFgver2xraK8sJSwHQJ8eAL9fPlneGZQkgN+rn4FigfD304mp5kaZunBMjcP4J+DqT5iF5rrdVmKycS15SwLONq1ht5GVrvb9/uzkvZW8E6Uc+SMBO/nHdJyuIGmM3UFcTmh4G4EdNXzHwIqK7d0d6FjiELux0YUGM3fzs7YZCPfaNppwAAAsFJREFUaN7V2vVTG1EQB/CFtjkKqYR4QhJIQvEiRQoUd6i7u7u7u7u77B9ahuaO3ONecsndo7ffH3d22U9uGFiGAwCQEgG9sSciaZftqaclzriUPv8aP33sxEQ8t5w6vMGxankAFxUr5Rs3G5Ry2Rb+uLfGJbeFKnKUcrhWKafKxMKu5Mp1e3ryQPKAyy+XrySX3Se449eS+24r5buoL65+gG5VJZyePEs1UCqXK1XlyH7OdEAtuCh/U3h0knH8GakLOenJM1UDs7U/CZ72aU/nqtvyZLJeMdqEkXEVPbKnnRwZi3rIkbFLIkfGA/TIrjPkyNi6nRwZd5lP7hVMxiOmk2Oiyeuc5pJDz0A0GVesyYZcYNNObyOIJ+PSbMiFKQWiyZhPj1y+mxwZ9wXIkXGYHhlP0SM3+8mR8VyQHBl3ZkbeMJcT7/SRcaFJN0abieQF6r+i2FWHC006iz6Lesp1T9lVy0ssfi/PCDewu6qsToYn7C73VauToY1dFsmzOrn+Mbut1mdxMtia2HUPrE6GUnadJ251Mqxl9927Y3Vy9CS78OEji5PhQje78b5RslfUL+wEGTZO+elskNwUFfyUATalFnDIRfO0s6cmDsLJuUezIf+Pe1khw2AnOTLU0SNLleTIEGshR4aVIXJkWE2PbL9EjgwHy8SRF8/hZG+HETIscWdEHpqvnarRxilkfnaUGCHD+ozI/Lz26SfjNkPkZRXmkLEvA7LTEBn6jplDtk0fGc7SI8N5euTgcXJk8FaTI8MhemS4TI8c2EyODFvLTSBHMuidyEvNfyjAC1W5mHfSjKjaXPUyuVkv4z3AW52tLc+1Lpw3UdnSnvw+YWs/9wxzqK4wpfxOJ+PV+Kkj+eMFOvLtg/LVf/52JDI8EJu0DP6Ry47vPSneyh0dk9uGvk6+sij9+JWfPiNfOoBi/gLsmpWpklmomwAAAABJRU5ErkJggg==" alt="">
+            </center>
+          </span>
+          <div class="wrap-input100 validate-input" data-validate="Valid email is: a@b.c">
+            <input class="input100" type="text" name="email" id="email">
+            <span class="focus-input100" data-placeholder="Email"></span>
+          </div>
+
+          <div class="wrap-input100 validate-input" data-validate="Enter password">
+            <span class="btn-show-pass">
+              <i class="zmdi zmdi-eye"></i>
+            </span>
+            <input class="input100" type="password" name="pass" id="pass">
+            <span class="focus-input100" data-placeholder="Password"></span>
+          </div>
+
+          <div class="container-login100-form-btn">
+            <div class="wrap-login100-form-btn">
+              <div class="login100-form-bgbtn"></div>
+              <button class="login100-form-btn">
+                Login
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="dropDownSelect1"></div>
+
+  <!--===============================================================================================-->
+  <script src="./assets/vendor/jquery/jquery-3.2.1.min.js"></script>
+  <!--===============================================================================================-->
+  <script src="./assets/vendor/animsition/js/animsition.min.js"></script>
+  <!--===============================================================================================-->
+  <script src="./assets/vendor/bootstrap/js/popper.js"></script>
+  <script src="./assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+  <!--===============================================================================================-->
+  <script src="./assets/vendor/select2/select2.min.js"></script>
+  <!--===============================================================================================-->
+  <script src="./assets/vendor/daterangepicker/moment.min.js"></script>
+  <script src="./assets/vendor/daterangepicker/daterangepicker.js"></script>
+  <!--===============================================================================================-->
+  <script src="./assets/vendor/countdowntime/countdowntime.js"></script>
+  <!--===============================================================================================-->
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+  <script src="./assets/js/main.js"></script>
+  <script>
+    if(Cookies.get('email') && Cookies.get('pass')) window.location.href = 'main.html'
+  </script>
+</body>
+
 </html>
